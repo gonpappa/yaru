@@ -129,6 +129,7 @@
       .progress { margin-bottom: 6px; flex-shrink: 0; }
       #learningMode { display: flex; flex-direction: column; flex: 1; min-height: 0; }
       #cardArea { flex: 1; min-height: 0; display: flex; }
+      #listMode { flex: 1; min-height: 0; overflow-y: auto; }
       .card-container { flex: 1; min-height: 0; padding: 14px; overflow-y: auto; }
       .card-word { font-size: clamp(24px, 9vw, 34px); padding: 10px 14px; margin-bottom: 8px; }
       .card-pronunciation { font-size: 12px; }
@@ -476,6 +477,16 @@
 
     document.getElementById('deck1Btn').addEventListener('click', () => app.switchDeck(1));
     document.getElementById('deck2Btn').addEventListener('click', () => app.switchDeck(2));
+
+    // iOS Safariのダブルタップ拡大を確実に無効化する(viewportのuser-scalable=noだけでは効かない場合があるため)
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', (event) => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 350) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, { passive: false });
   </script>
 </body>
 </html>

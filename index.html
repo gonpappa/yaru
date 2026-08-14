@@ -41,23 +41,13 @@
     .card-word.other { background: linear-gradient(135deg, #E8E4F0 0%, #DAD3E8 100%); }
     .card-word.phrase { background: linear-gradient(135deg, #FFF3C4 0%, #FFE9A0 100%); }
 
-    .card-pronunciation { font-size: 14px; color: #888780; margin-bottom: 20px; font-family: "Courier New", monospace; flex-shrink: 0; }
-
-    .audio-btn-circle { width: 56px; height: 56px; flex-shrink: 0; border-radius: 50%; background: linear-gradient(135deg, #FFB3BA 0%, #FFA0AC 100%); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(255, 160, 172, 0.35); font-weight: 700; }
-    .audio-btn-circle:hover { box-shadow: 0 6px 18px rgba(255, 160, 172, 0.5); transform: translateY(-3px); }
-    .audio-btn-circle:active { transform: scale(0.92); box-shadow: 0 2px 6px rgba(255, 160, 172, 0.3); }
-    .ear-icon { width: 26px; height: 26px; }
+    .card-pronunciation { font-size: 14px; color: #888780; font-family: "Courier New", monospace; }
     .ear-icon-sm { width: 16px; height: 16px; vertical-align: -3px; }
 
-    .control-row { display: flex; gap: 10px; align-items: center; justify-content: center; margin-bottom: 20px; flex-shrink: 0; flex-wrap: wrap; }
-
-    .btn-rect-blue { padding: 12px 18px; border: none; background: linear-gradient(135deg, #ADD8E6 0%, #9DC7D5 100%); color: #2c2c2a; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 3px 10px rgba(173, 216, 230, 0.3); }
-    .btn-rect-blue:hover { box-shadow: 0 5px 15px rgba(173, 216, 230, 0.5); transform: translateY(-2px); }
-    .btn-rect-blue:active { transform: scale(0.96); }
-
-    .btn-hint { padding: 12px 18px; border: none; background: linear-gradient(135deg, #FFE0B3 0%, #FFD699 100%); color: #2c2c2a; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 3px 10px rgba(255, 214, 153, 0.3); }
-    .btn-hint:hover { box-shadow: 0 5px 15px rgba(255, 214, 153, 0.5); transform: translateY(-2px); }
-    .btn-hint:active { transform: scale(0.96); }
+    .pronunciation-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px; flex-shrink: 0; }
+    .ear-btn-inline { width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; background: linear-gradient(135deg, #FFB3BA 0%, #FFA0AC 100%); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(255, 160, 172, 0.35); }
+    .ear-btn-inline:hover { box-shadow: 0 4px 12px rgba(255, 160, 172, 0.5); transform: translateY(-2px); }
+    .ear-btn-inline:active { transform: scale(0.9); }
 
     .btn-rect-gray { padding: 12px 18px; border: none; background: linear-gradient(135deg, #E8E8E6 0%, #DEDDD8 100%); color: #2c2c2a; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
     .btn-rect-gray:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.15); transform: translateY(-2px); }
@@ -69,6 +59,10 @@
     .hint-pane img { max-width: 100%; max-height: 100%; border-radius: 6px; object-fit: contain; }
     .hint-pane .hint-text { font-size: 14px; color: #2c2c2a; word-break: break-word; }
     .pane-placeholder { font-size: 12px; color: #b0aca0; }
+
+    .pane-tappable { cursor: pointer; transition: all 0.2s ease; }
+    .pane-tappable:hover { background: #efe8df; }
+    .pane-tappable:active { transform: scale(0.98); }
 
     .answer-pane { flex: 1; min-width: 0; background: white; border: 0.5px solid #d3d1c7; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
     .answer-word { font-size: 26px; font-weight: 600; margin-bottom: 12px; }
@@ -136,18 +130,17 @@
       #cardArea { flex: 1; min-height: 0; display: flex; }
       .card-container { flex: 1; min-height: 0; padding: 14px; overflow-y: auto; }
       .card-word { font-size: clamp(24px, 9vw, 34px); padding: 10px 14px; margin-bottom: 8px; }
-      .card-pronunciation { font-size: 12px; margin-bottom: 10px; }
-      .audio-btn-circle { width: 48px; height: 48px; }
-      .ear-icon { width: 22px; height: 22px; }
-      .control-row { gap: 6px; margin-bottom: 10px; }
-      .btn-rect-blue, .btn-rect-gray, .btn-hint { padding: 8px 9px; font-size: 11px; }
+      .card-pronunciation { font-size: 12px; }
+      .pronunciation-row { gap: 6px; margin-bottom: 10px; }
+      .ear-btn-inline { width: 28px; height: 28px; }
+      .btn-rect-gray { padding: 8px 9px; font-size: 11px; }
       .hint-answer-area { gap: 6px; min-height: 175px; }
       .hint-pane, .answer-pane { padding: 8px; }
       .hint-pane .hint-text, .pane-placeholder { font-size: 10px; }
       .answer-word { font-size: 18px; margin-bottom: 6px; }
       .btn-audio-repeat { padding: 7px 12px; font-size: 12px; }
       .understanding-buttons { margin-top: 10px; gap: 5px; }
-      .understanding-buttons .btn { width: 38px; height: 38px; font-size: 9px; }
+      .understanding-buttons .btn { width: 44px; height: 44px; font-size: 10px; }
       .nav-row { margin-top: 10px; gap: 6px; }
     }
   </style>
@@ -227,7 +220,6 @@
       '来る': 'くる',
     };
 
-    const EAR_ICON = '<svg class="ear-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5a6.5 6.5 0 1 1 13 0c0 6-6 6-6 10a3.5 3.5 0 1 1-7 0"/><path d="M15 8.5a2.5 2.5 0 0 0-5 0v1a2 2 0 1 1 0 4"/></svg>';
     const EAR_ICON_SM = '<svg class="ear-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5a6.5 6.5 0 1 1 13 0c0 6-6 6-6 10a3.5 3.5 0 1 1-7 0"/><path d="M15 8.5a2.5 2.5 0 0 0-5 0v1a2 2 0 1 1 0 4"/></svg>';
 
     class LearningApp {
@@ -304,17 +296,14 @@
 
         let html = '<div class="card-container">';
 
-        const pronunciationBlock = card.phonetics ? `<div class="card-pronunciation">${card.phonetics}</div>` : '';
-
         if (this.currentDeck === 1) {
           html += `<div class="card-word ${card.pos}">${card.en}</div>`;
-          html += pronunciationBlock;
-          html += this.renderControlRow(card.en, 'en-US');
+          html += this.renderPronunciationRow(card.phonetics, card.en, 'en-US');
           html += this.renderHintAnswerArea(card, card.ja, 'ja-JP', false);
           html += this.renderNavRow();
         } else {
           html += `<div class="card-word ${card.pos}">${card.ja}</div>`;
-          html += this.renderControlRow(card.ja, 'ja-JP');
+          html += this.renderPronunciationRow('', card.ja, 'ja-JP');
           html += this.renderHintAnswerArea(card, card.en, 'en-US', true);
           html += this.renderNavRow();
         }
@@ -336,11 +325,11 @@
         }, 300);
       }
 
-      renderControlRow(frontText, frontLang) {
-        return `<div class="control-row">
-          <button class="btn-hint" onclick="app.showHint()">ヒント</button>
-          <button class="btn-rect-blue" onclick="app.showAnswer()">正解</button>
-          <button class="audio-btn-circle" onclick="app.speak('${frontText}', '${frontLang}')">${EAR_ICON}</button>
+      renderPronunciationRow(phonetics, speakText, speakLang) {
+        const pronText = phonetics ? `<span class="card-pronunciation">${phonetics}</span>` : '';
+        return `<div class="pronunciation-row">
+          ${pronText}
+          <button class="ear-btn-inline" onclick="app.speak('${speakText}', '${speakLang}')">${EAR_ICON_SM}</button>
         </div>`;
       }
 
@@ -356,6 +345,8 @@
         } else {
           hintInner = `<div class="hint-text">${hintValue}</div>`;
         }
+        const hintPaneClass = 'hint-pane' + (this.showingHint ? '' : ' pane-tappable');
+        const hintPaneClick = this.showingHint ? '' : ' onclick="app.showHint()"';
 
         let answerInner;
         if (!this.showingAnswer) {
@@ -372,10 +363,12 @@
               <button class="btn btn-done" onclick="app.finishCard()">了</button>
             </div>`;
         }
+        const answerPaneClass = 'answer-pane' + (this.showingAnswer ? '' : ' pane-tappable');
+        const answerPaneClick = this.showingAnswer ? '' : ' onclick="app.showAnswer()"';
 
         return `<div class="hint-answer-area">
-          <div class="hint-pane">${hintInner}</div>
-          <div class="answer-pane">${answerInner}</div>
+          <div class="${hintPaneClass}"${hintPaneClick}>${hintInner}</div>
+          <div class="${answerPaneClass}"${answerPaneClick}>${answerInner}</div>
         </div>`;
       }
 

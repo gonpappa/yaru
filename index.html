@@ -55,26 +55,26 @@
     .btn-rect-gray:active { transform: scale(0.96); }
     .btn-rect-gray:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; transform: none; }
 
-    .hint-answer-area { width: 100%; display: flex; gap: 12px; flex-shrink: 0; min-height: 220px; }
-    .hint-pane { flex: 0 0 calc(33.333% - 6px); background: #f5f2ea; border: 0.5px solid #d3d1c7; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
-    .hint-pane img { max-width: 100%; max-height: 100%; border-radius: 6px; object-fit: contain; }
-    .hint-pane .hint-text { font-size: 14px; color: #2c2c2a; word-break: break-word; }
-    .pane-placeholder { font-size: 12px; color: #b0aca0; }
+    .hint-answer-area { width: 100%; display: flex; flex-direction: column; gap: 14px; flex-shrink: 0; }
+    .hint-pane { width: 100%; min-height: 72px; background: #f5f2ea; border: 0.5px solid #d3d1c7; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .hint-pane img { max-width: 100%; max-height: 220px; border-radius: 6px; object-fit: contain; }
+    .hint-pane .hint-text { font-size: 20px; line-height: 1.5; color: #2c2c2a; word-break: break-word; }
+    .pane-placeholder { font-size: 13px; color: #b0aca0; }
 
     .pane-tappable { cursor: pointer; transition: all 0.2s ease; }
     .pane-tappable:hover { background: #efe8df; }
     .pane-tappable:active { transform: scale(0.98); }
 
-    .answer-pane { flex: 1; min-width: 0; background: white; border: 0.5px solid #d3d1c7; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-    .answer-word { font-size: 26px; font-weight: 600; margin-bottom: 12px; }
+    .answer-pane { width: 100%; min-height: 72px; background: white; border: 0.5px solid #d3d1c7; border-radius: 8px; padding: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .answer-word { font-size: 34px; font-weight: 600; margin-bottom: 12px; line-height: 1.4; }
 
     .btn-audio-repeat { padding: 10px 16px; background: linear-gradient(135deg, #E8E8E6 0%, #DEDDD8 100%); color: #2c2c2a; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     .btn-audio-repeat:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); transform: translateY(-2px); }
     .btn-audio-repeat:active { transform: scale(0.96); }
 
-    .nav-row { display: flex; gap: 12px; margin-top: 20px; justify-content: center; flex-shrink: 0; }
+    .nav-row { display: flex; gap: 12px; margin: 4px 0 20px; justify-content: center; flex-shrink: 0; }
 
-    .understanding-buttons { display: flex; flex-wrap: nowrap; gap: 10px; margin-top: 16px; width: 100%; justify-content: center; }
+    .understanding-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; width: 100%; justify-content: center; }
     .understanding-buttons .btn { width: 56px; height: 56px; flex-shrink: 0; border-radius: 50%; border: none; cursor: pointer; font-weight: 700; font-size: 12px; line-height: 1.2; transition: all 0.3s ease; color: #2c2c2a; display: flex; align-items: center; justify-content: center; text-align: center; }
 
     .btn-2 { background: hsl(0, 65%, 84%); box-shadow: 0 3px 10px hsla(0, 65%, 84%, 0.5); }
@@ -120,30 +120,29 @@
     .phrase { background: linear-gradient(135deg, #FFF3C4 0%, #FFE9A0 100%); }
 
     @media (max-width: 480px) {
-      .app { height: 100dvh; display: flex; flex-direction: column; padding: 10px 14px; overflow: hidden; }
-      .header { margin-bottom: 10px; flex-shrink: 0; }
+      .app { min-height: 100dvh; padding: 10px 14px; }
+      .header { margin-bottom: 10px; }
       .header h1 { font-size: 19px; }
       .header-btn { padding: 6px 10px; font-size: 11px; }
-      .deck-tabs { margin-bottom: 10px; flex-shrink: 0; }
+      .deck-tabs { margin-bottom: 10px; }
       .deck-btn { padding: 9px; font-size: 13px; }
-      .progress { margin-bottom: 6px; flex-shrink: 0; }
-      #learningMode { display: flex; flex-direction: column; flex: 1; min-height: 0; }
-      #cardArea { flex: 1; min-height: 0; display: flex; }
-      #listMode { flex: 1; min-height: 0; overflow-y: auto; }
-      .card-container { flex: 1; min-height: 0; padding: 14px; overflow-y: auto; }
+      .progress { margin-bottom: 6px; }
+      .card-container { padding: 14px; }
       .card-word { font-size: clamp(24px, 9vw, 34px); padding: 10px 14px; margin-bottom: 8px; }
       .card-pronunciation { font-size: 12px; }
       .pronunciation-row { gap: 6px; margin-bottom: 10px; }
       .ear-btn-inline { width: 28px; height: 28px; }
       .btn-rect-gray { padding: 8px 9px; font-size: 11px; }
-      .hint-answer-area { gap: 6px; min-height: 175px; }
-      .hint-pane, .answer-pane { padding: 8px; }
-      .hint-pane .hint-text, .pane-placeholder { font-size: 10px; }
-      .answer-word { font-size: 18px; margin-bottom: 6px; }
+      .nav-row { margin: 2px 0 14px; gap: 6px; }
+      .hint-answer-area { gap: 10px; }
+      .hint-pane, .answer-pane { padding: 10px; min-height: 56px; }
+      .hint-pane img { max-height: 150px; }
+      .hint-pane .hint-text { font-size: 16px; }
+      .pane-placeholder { font-size: 11px; }
+      .answer-word { font-size: 24px; margin-bottom: 6px; }
       .btn-audio-repeat { padding: 7px 12px; font-size: 12px; }
-      .understanding-buttons { margin-top: 10px; gap: 5px; }
-      .understanding-buttons .btn { width: 44px; height: 44px; font-size: 10px; }
-      .nav-row { margin-top: 10px; gap: 6px; }
+      .understanding-buttons { margin-top: 10px; gap: 6px; }
+      .understanding-buttons .btn { width: 46px; height: 46px; font-size: 10px; }
     }
   </style>
 </head>
@@ -300,13 +299,13 @@
         if (this.currentDeck === 1) {
           html += `<div class="card-word ${card.pos}">${card.en}</div>`;
           html += this.renderPronunciationRow(card.phonetics, card.en, 'en-US');
-          html += this.renderHintAnswerArea(card, card.ja, 'ja-JP', false);
           html += this.renderNavRow();
+          html += this.renderHintAnswerArea(card, card.ja, 'ja-JP', false);
         } else {
           html += `<div class="card-word ${card.pos}">${card.ja}</div>`;
           html += this.renderPronunciationRow('', card.ja, 'ja-JP');
-          html += this.renderHintAnswerArea(card, card.en, 'en-US', true);
           html += this.renderNavRow();
+          html += this.renderHintAnswerArea(card, card.en, 'en-US', true);
         }
 
         html += '</div>';

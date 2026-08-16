@@ -487,6 +487,34 @@
       }
       lastTouchEnd = now;
     }, { passive: false });
+
+    // カードエリアを左右にフリックして前後の単語に移動する
+    (() => {
+      const cardArea = document.getElementById('cardArea');
+      let startX = 0;
+      let startY = 0;
+
+      cardArea.addEventListener('touchstart', (event) => {
+        startX = event.changedTouches[0].screenX;
+        startY = event.changedTouches[0].screenY;
+      }, { passive: true });
+
+      cardArea.addEventListener('touchend', (event) => {
+        const endX = event.changedTouches[0].screenX;
+        const endY = event.changedTouches[0].screenY;
+        const deltaX = endX - startX;
+        const deltaY = endY - startY;
+        const minSwipeDistance = 60;
+
+        if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+          if (deltaX < 0) {
+            app.skipCard();
+          } else {
+            app.goToPrevious();
+          }
+        }
+      }, { passive: true });
+    })();
   </script>
 </body>
 </html>

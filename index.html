@@ -180,40 +180,35 @@
   <script>
     // PAPPA英単語リスト.csv より取り込み（チェック=1のみ、表の行順のまま）
     // pos は色分け用（noun=名詞, verb=動詞, other=品詞欄が未記入）
-    // hint はCSVの「URL」列に対応。http(s)://で始まればイラスト画像として、それ以外は文字ヒントとして表示されます
+    // hint はCSVの「URL」列に対応。
+    // ・http(s)://で始まる → そのままイラスト画像として表示
+    // ・run.jpg のようにファイル名だけ書く → HINT_IMAGE_BASE と組み合わせて画像として表示
+    // ・それ以外 → 文字ヒントとして表示
     const SAMPLE_WORDS = [
-      { en: 'I', ja: '私は(が)', phonetics: '/aɪ/', pos: 'noun' },
-      { en: 'me', ja: '私を／私に', phonetics: '/miː/', pos: 'noun' },
+      { en: 'I', ja: '私は(が)', phonetics: '/aɪ/', pos: 'noun', hint: 'I.png' },
       { en: 'my', ja: '私の', phonetics: '/maɪ/', pos: 'other' },
-      { en: 'mine', ja: '私のもの', phonetics: '/maɪn/', pos: 'noun' },
-      { en: 'you', ja: 'あなたは(が)／あなたを・に（複数形同じ）', phonetics: '/juː/', pos: 'noun' },
-      { en: 'your', ja: 'あなたの（複数形同じ）', phonetics: '/jʊər/', pos: 'other' },
-      { en: 'yours', ja: 'あなたのもの（複数形同じ）', phonetics: '/jɔːrz/', pos: 'noun' },
-      { en: 'he', ja: '彼は(が)', phonetics: '/hiː/', pos: 'noun' },
-      { en: 'him', ja: '彼を', phonetics: '/hɪm/', pos: 'noun' },
-      { en: 'his', ja: '彼の／彼のもの', phonetics: '/hɪz/', pos: 'other' },
-      { en: 'she', ja: '彼女は(が)', phonetics: '/ʃiː/', pos: 'noun' },
-      { en: 'her', ja: '彼女の／彼女を・に', phonetics: '/hɜːr/', pos: 'noun' },
-      { en: 'hers', ja: '彼女のもの', phonetics: '/hɜːrz/', pos: 'noun' },
-      { en: 'it', ja: 'それは(が)／それを・に', phonetics: '/ɪt/', pos: 'noun' },
-      { en: 'its', ja: 'それの', phonetics: '/ɪts/', pos: 'other' },
-      { en: 'they', ja: '彼(女・それ)らは(が）', phonetics: '/ðeɪ/', pos: 'noun' },
-      { en: 'them', ja: '彼(女・それ)らを・に', phonetics: '/ðem/', pos: 'noun' },
-      { en: 'their', ja: '彼(女・それ)らの', phonetics: '/ðɛər/', pos: 'other' },
-      { en: 'theirs', ja: '彼(女・それ)らのもの', phonetics: '/ðɛərz/', pos: 'noun' },
-      { en: 'we', ja: '私たちは(が)', phonetics: '/wiː/', pos: 'noun' },
-      { en: 'us', ja: '私たちを・に', phonetics: '/ʌs/', pos: 'noun' },
-      { en: 'our', ja: '私たちの', phonetics: '/aʊər/', pos: 'other' },
-      { en: 'ours', ja: '私たちのもの', phonetics: '/aʊərz/', pos: 'noun' },
+      { en: 'you', ja: 'あなたは(が)／あなたを・に（複数形同じ）', phonetics: '/juː/', pos: 'noun', hint: 'you.png' },
+      { en: 'he', ja: '彼は(が)', phonetics: '/hiː/', pos: 'noun', hint: 'he.png' },
+      { en: 'she', ja: '彼女は(が)', phonetics: '/ʃiː/', pos: 'noun', hint: 'she.png' },
+      { en: 'it', ja: 'それは(が)／それを・に', phonetics: '/ɪt/', pos: 'noun', hint: 'it.png' },
+      { en: 'they', ja: '彼(女・それ)らは(が）', phonetics: '/ðeɪ/', pos: 'noun', hint: 'they.png' },
+      { en: 'we', ja: '私たちは(が)', phonetics: '/wiː/', pos: 'noun', hint: 'we.png' },
       { en: 'play', ja: 'する／あそぶ', phonetics: '/pleɪ/', pos: 'verb' },
       { en: 'run', ja: '走る', phonetics: '/rʌn/', pos: 'verb' },
       { en: 'walk', ja: '歩く', phonetics: '/wɔːk/', pos: 'verb' },
       { en: 'park', ja: '公園', phonetics: '/pɑːrk/', pos: 'noun' },
-      { en: 'game', ja: 'ゲーム', phonetics: '/ɡeɪm/', pos: 'noun' },
       { en: 'every day', ja: '毎日', phonetics: '/ˈɛvri deɪ/', pos: 'other' },
-      { en: 'go', ja: '行く', phonetics: '/ɡoʊ/', pos: 'verb' },
-      { en: 'this', ja: 'これ', phonetics: '/ðɪs/', pos: 'other' },
-      { en: 'that', ja: 'あれ', phonetics: '/ðæt/', pos: 'other' },
+      { en: 'this', ja: 'これ・この', phonetics: '/ðɪs/', pos: 'other', hint: 'This is a pen.' },
+      { en: 'that', ja: 'あれ・あの', phonetics: '/ðæt/', pos: 'other', hint: 'thAt' },
+      { en: 'here', ja: 'ここ', phonetics: '/hɪr/', pos: 'adverb' },
+      { en: 'there', ja: 'あそこ、そこ', phonetics: '/ðɛr/', pos: 'adverb', hint: 't＋here' },
+      { en: 'old', ja: '古い', phonetics: '/oʊld/', pos: 'adjective' },
+      { en: 'brother', ja: '兄弟', phonetics: '/ˈbrʌðər/', pos: 'noun', hint: 'sister' },
+      { en: 'student', ja: '生徒', phonetics: '/ˈstuːdənt/', pos: 'noun', hint: 'teacher' },
+      { en: 'hair', ja: '髪', phonetics: '/hɛr/', pos: 'noun', hint: 'air, chair' },
+      { en: 'dangerous', ja: '危険な', phonetics: '/ˈdeɪndʒərəs/', pos: 'adjective', hint: 'dan/ge/rous' },
+      { en: 'large', ja: '大きい', phonetics: '/lɑːrdʒ/', pos: 'adjective', hint: 'small' },
+      { en: 'busy', ja: '忙しい', phonetics: '/ˈbɪzi/', pos: 'adjective', hint: 'I am busy.' },
     ];
 
     // 読み上げが誤読する単語はここに「表示テキスト: 読ませたいテキスト」の形で追加してください
@@ -221,6 +216,10 @@
       'I': 'eye',
       '来る': 'くる',
     };
+
+    // ヒント画像のURL省略用。CSVのURL列に「run.jpg」のようにファイル名だけ書けば、
+    // このフォルダに置いた画像を自動的に読み込みます（GitHubの images フォルダにアップロードしてください）
+    const HINT_IMAGE_BASE = 'https://gonpappa.github.io/yaru/images/';
 
     const EAR_ICON_SM = '<svg class="ear-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5a6.5 6.5 0 1 1 13 0c0 6-6 6-6 10a3.5 3.5 0 1 1-7 0"/><path d="M15 8.5a2.5 2.5 0 0 0-5 0v1a2 2 0 1 1 0 4"/></svg>';
 
@@ -344,6 +343,8 @@
           hintInner = '<div class="pane-placeholder">ヒントは登録されていません</div>';
         } else if (/^https?:\/\//i.test(hintValue)) {
           hintInner = `<img src="${hintValue}" alt="ヒント">`;
+        } else if (/\.(jpe?g|png|gif|webp)$/i.test(hintValue)) {
+          hintInner = `<img src="${HINT_IMAGE_BASE}${hintValue}" alt="ヒント">`;
         } else {
           hintInner = `<div class="hint-text">${hintValue}</div>`;
         }

@@ -184,9 +184,8 @@
     // ・run.jpg のようにファイル名だけ書く → HINT_IMAGE_BASE と組み合わせて画像として表示
     // ・それ以外 → 文字ヒントとして表示
     const SAMPLE_WORDS = [
-      { en: 'I', ja: '私は(が)', phonetics: '/aɪ/', pos: 'noun', hint: 'I.png' },
-      { en: 'my', ja: '私の', phonetics: '/maɪ/', pos: 'other' },
-      { en: 'you', ja: 'あなたは(が)／あなたを・に（複数形同じ）', phonetics: '/juː/', pos: 'noun', hint: 'you.png' },
+      { en: 'my', ja: '私の', phonetics: '/maɪ/', pos: 'adjective' },
+      { en: 'your', ja: 'あなたの（複数形同じ）', phonetics: '/jʊər/', pos: 'adjective' },
       { en: 'he', ja: '彼は(が)', phonetics: '/hiː/', pos: 'noun', hint: 'he.png' },
       { en: 'she', ja: '彼女は(が)', phonetics: '/ʃiː/', pos: 'noun', hint: 'she.png' },
       { en: 'it', ja: 'それは(が)／それを・に', phonetics: '/ɪt/', pos: 'noun', hint: 'it.png' },
@@ -197,9 +196,7 @@
       { en: 'walk', ja: '歩く', phonetics: '/wɔːk/', pos: 'verb' },
       { en: 'park', ja: '公園', phonetics: '/pɑːrk/', pos: 'noun' },
       { en: 'every day', ja: '毎日', phonetics: '/ˈɛvri deɪ/', pos: 'other' },
-      { en: 'this', ja: 'これ・この', phonetics: '/ðɪs/', pos: 'other', hint: 'This is a pen.' },
-      { en: 'that', ja: 'あれ・あの', phonetics: '/ðæt/', pos: 'other', hint: 'thAt' },
-      { en: 'here', ja: 'ここ', phonetics: '/hɪr/', pos: 'adverb' },
+      { en: 'here', ja: 'ここ', phonetics: '/hɪr/', pos: 'adverb', hint: 'come here!' },
       { en: 'there', ja: 'あそこ、そこ', phonetics: '/ðɛr/', pos: 'adverb', hint: 't＋here' },
       { en: 'old', ja: '古い', phonetics: '/oʊld/', pos: 'adjective' },
       { en: 'brother', ja: '兄弟', phonetics: '/ˈbrʌðər/', pos: 'noun', hint: 'sister' },
@@ -208,7 +205,21 @@
       { en: 'dangerous', ja: '危険な', phonetics: '/ˈdeɪndʒərəs/', pos: 'adjective', hint: 'dan/ge/rous' },
       { en: 'large', ja: '大きい', phonetics: '/lɑːrdʒ/', pos: 'adjective', hint: 'small' },
       { en: 'busy', ja: '忙しい', phonetics: '/ˈbɪzi/', pos: 'adjective', hint: 'I am busy.' },
+      { en: 'junior high school', ja: '中学校', phonetics: '/ˈdʒuːnjər haɪ skuːl/', pos: 'noun', hint: 'high school 高校' },
+      { en: 'Mr.', ja: '〜さん（男の人に）', phonetics: '/ˈmɪstər/', pos: 'noun', hint: 'Mr. Oshii' },
+      { en: 'Ms.', ja: '〜さん（女の人に）', phonetics: '/mɪz/', pos: 'noun', hint: 'Ms. Kato（未婚・既婚に関わらず使える）' },
+      { en: 'pencil', ja: '鉛筆', phonetics: '/ˈpensəl/', pos: 'noun' },
+      { en: 'interesting', ja: '興味深い（おもしろい）', phonetics: '/ˈɪntrəstɪŋ/', pos: 'adjective', hint: '笑える（おもしろい）＝funny' },
     ];
+
+    // 表示順: 動詞→名詞→形容詞→その他（副詞なども含む）の順に並び替える。
+    // SAMPLE_WORDS 自体はCSVの行順のまま管理し、ここで並び替えたものを実際の表示に使う
+    const POS_SORT_ORDER = { verb: 0, noun: 1, adjective: 2 };
+    const SORTED_WORDS = [...SAMPLE_WORDS].sort((a, b) => {
+      const rankA = POS_SORT_ORDER.hasOwnProperty(a.pos) ? POS_SORT_ORDER[a.pos] : 3;
+      const rankB = POS_SORT_ORDER.hasOwnProperty(b.pos) ? POS_SORT_ORDER[b.pos] : 3;
+      return rankA - rankB;
+    });
 
     // 読み上げが誤読する単語はここに「表示テキスト: 読ませたいテキスト」の形で追加してください
     const SPEECH_OVERRIDES = {
@@ -236,7 +247,7 @@
       }
 
       init() {
-        this.cards = [...SAMPLE_WORDS].map((w, i) => ({
+        this.cards = [...SORTED_WORDS].map((w, i) => ({
           id: i,
           ...w,
           status: 'learning',
@@ -262,7 +273,7 @@
 
       renderWordList() {
         const container = document.getElementById('wordListContainer');
-        container.innerHTML = SAMPLE_WORDS.map(w => `
+        container.innerHTML = SORTED_WORDS.map(w => `
           <div class="word-card ${w.pos}">
             <div class="word-en">${w.en}</div>
             <div class="word-ja">${w.ja}</div>
@@ -459,7 +470,7 @@
       switchDeck(deck) {
         this.currentDeck = deck;
         this.currentIndex = 0;
-        this.cards = [...SAMPLE_WORDS].map((w, i) => ({
+        this.cards = [...SORTED_WORDS].map((w, i) => ({
           id: i,
           ...w,
           status: 'learning',

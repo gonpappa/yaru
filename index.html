@@ -249,6 +249,9 @@
         this.showingAnswer = false;
         this.showingHint = false;
         this.listMode = false;
+        this.lastWordTapEn = null;
+        this.lastWordTapTime = 0;
+        this.wordTapTimer = null;
         this.init();
       }
 
@@ -280,11 +283,59 @@
       renderWordList() {
         const container = document.getElementById('wordListContainer');
         container.innerHTML = SORTED_WORDS.map(w => `
-          <div class="word-card ${w.pos}">
+          <div class="word-card ${w.pos}" onclick="app.handleWordTap('${w.en.replace(/'/g, "\\'")}')">
             <div class="word-en">${w.en}</div>
             <div class="word-ja">${w.ja}</div>
           </div>
         `).join('');
+      }
+
+      handleWordTap(en) {
+        const now = Date.now();
+        if (this.lastWordTapEn === en && (now - this.lastWordTapTime) < 350) {
+          clearTimeout(this.wordTapTimer);
+          this.lastWordTapEn = null;
+          this.jumpToWord(en);
+        } else {
+          this.lastWordTapEn = en;
+          this.lastWordTapTime = now;
+          clearTimeout(this.wordTapTimer);
+          this.wordTapTimer = setTimeout(() => {
+            this.speak(en, 'en-US');
+            this.lastWordTapEn = null;
+          }, 320);
+        }
+      }
+
+      jumpToWord(en) {
+        let target = null;
+        const idxInCards = this.cards.findIndex(c => c.en === en);
+        if (idxInCards !== -1) {
+          target = this.cards[idxInCards];
+          this.cards.splice(idxInCards, 1);
+        } else {
+          const idxInQueue = this.revisionQueue.findIndex(c => c.en === en);
+          if (idxInQueue !== -1) {
+            target = this.revisionQueue[idxInQueue];
+            this.revisionQueue.splice(idxInQueue, 1);
+          }
+        }
+        if (!target) {
+          const source = SORTED_WORDS.find(w => w.en === en);
+          if (!source) return;
+          target = { id: -1, ...source, status: 'learning', revisionsScheduled: [] };
+        }
+
+        if (this.cards[this.currentIndex]) {
+          this.history.push(this.cards[this.currentIndex]);
+        }
+        this.cards.splice(this.currentIndex, 0, target);
+        this.showingAnswer = false;
+        this.showingHint = false;
+        this.listMode = false;
+        document.getElementById('learningMode').style.display = 'block';
+        document.getElementById('listMode').style.display = 'none';
+        this.renderDeck();
       }
 
       toggleList() {
@@ -496,8 +547,12 @@
     document.getElementById('deck2Btn').addEventListener('click', () => app.switchDeck(2));
 
     // iOS Safariのダブルタップ拡大を確実に無効化する(viewportのuser-scalable=noだけでは効かない場合があるため)
+    // ただし単語一覧の「2回タップでカードへ移動」機能とぶつからないよう、word-card上では働かせない
     let lastTouchEnd = 0;
     document.addEventListener('touchend', (event) => {
+      if (event.target.closest('.word-card')) {
+        return;
+      }
       const now = Date.now();
       if (now - lastTouchEnd <= 350) {
         event.preventDefault();

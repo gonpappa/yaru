@@ -243,6 +243,24 @@
 
     const EAR_ICON_SM = '<svg class="ear-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5a6.5 6.5 0 1 1 13 0c0 6-6 6-6 10a3.5 3.5 0 1 1-7 0"/><path d="M15 8.5a2.5 2.5 0 0 0-5 0v1a2 2 0 1 1 0 4"/></svg>';
 
+    // 端末に入っている音声から、男性の声らしいものを優先的に選ぶ
+    // (Web Speech APIには「性別」を直接指定する仕組みがないため、よく使われる男性ボイス名で判定しています)
+    const MALE_VOICE_NAME_HINTS = ['male', 'daniel', 'alex', 'fred', 'aaron', 'arthur', 'nathan', 'oliver', 'otoya', 'eddy', 'reed', 'rocko', 'gordon'];
+    let cachedVoices = [];
+    function refreshVoices() {
+      cachedVoices = speechSynthesis.getVoices();
+    }
+    refreshVoices();
+    if (typeof speechSynthesis.addEventListener === 'function') {
+      speechSynthesis.addEventListener('voiceschanged', refreshVoices);
+    }
+    function pickMaleVoice(lang) {
+      const langPrefix = lang.split('-')[0];
+      const langVoices = cachedVoices.filter(v => v.lang === lang || v.lang.startsWith(langPrefix));
+      const male = langVoices.find(v => MALE_VOICE_NAME_HINTS.some(hint => v.name.toLowerCase().includes(hint)));
+      return male || null;
+    }
+
     class LearningApp {
       constructor() {
         this.currentDeck = 1;
@@ -497,6 +515,10 @@
         const utterance = new SpeechSynthesisUtterance(spokenText);
         utterance.lang = lang;
         utterance.rate = 0.9;
+        const maleVoice = pickMaleVoice(lang);
+        if (maleVoice) {
+          utterance.voice = maleVoice;
+        }
         speechSynthesis.cancel();
         speechSynthesis.speak(utterance);
       }

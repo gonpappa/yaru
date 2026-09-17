@@ -181,7 +181,7 @@
     // pos は色分け用（noun=名詞, verb=動詞, other=品詞欄が未記入）
     // hint はCSVの「URL」列に対応。
     // ・http(s)://で始まる → そのままイラスト画像として表示
-    // ・run.jpg のようにファイル名だけ書く → HINT_IMAGE_BASE と組み合わせて画像として表示
+    // ・run.jpg のようにファイル名だけ書く → まずリポジトリのルート、見つからなければ cards_16 フォルダを探して画像として表示
     // ・それ以外 → 文字ヒントとして表示
     const SAMPLE_WORDS = [
       { en: 'my', ja: '私の', phonetics: '/maɪ/', pos: 'adjective' },
@@ -220,18 +220,18 @@
       { en: 'why', ja: 'なぜ', phonetics: '/waɪ/', pos: 'other' },
       { en: 'where', ja: 'どこ', phonetics: '/wɛr/', pos: 'other', hint: 'hereが隠れてる' },
       { en: 'when', ja: 'いつ', phonetics: '/wɛn/', pos: 'other' },
-      { en: 'look (at)', ja: '見る', phonetics: '/lʊk/', pos: 'verb' },
-      { en: 'listen (to)', ja: '聞く', phonetics: '/ˈlɪsən/', pos: 'verb' },
-      { en: 'live', ja: '住む', phonetics: '/lɪv/', pos: 'verb' },
-      { en: 'go (to)', ja: '行く', phonetics: '/ɡoʊ/', pos: 'verb' },
-      { en: 'want', ja: '望む', phonetics: '/wɑnt/', pos: 'verb' },
-      { en: 'need', ja: '必要とする', phonetics: '/niːd/', pos: 'verb' },
-      { en: 'use', ja: '使う', phonetics: '/juːz/', pos: 'verb' },
-      { en: 'eat', ja: '食べる', phonetics: '/iːt/', pos: 'verb' },
-      { en: 'have', ja: '持つ（飼う）', phonetics: '/hæv/', pos: 'verb' },
-      { en: 'make', ja: '作る', phonetics: '/meɪk/', pos: 'verb' },
-      { en: 'study', ja: '勉強する', phonetics: '/ˈstʌdi/', pos: 'verb' },
-      { en: 'clean', ja: '掃除する(きれいにする)', phonetics: '/kliːn/', pos: 'verb' },
+      { en: 'look (at)', ja: '見る', phonetics: '/lʊk/', pos: 'verb', hint: 'look.png' },
+      { en: 'listen (to)', ja: '聞く', phonetics: '/ˈlɪsən/', pos: 'verb', hint: 'listen.png' },
+      { en: 'live', ja: '住む', phonetics: '/lɪv/', pos: 'verb', hint: 'live.png' },
+      { en: 'go (to)', ja: '行く', phonetics: '/ɡoʊ/', pos: 'verb', hint: 'go.png' },
+      { en: 'want', ja: '望む', phonetics: '/wɑnt/', pos: 'verb', hint: 'want.png' },
+      { en: 'need', ja: '必要とする', phonetics: '/niːd/', pos: 'verb', hint: 'need.png' },
+      { en: 'use', ja: '使う', phonetics: '/juːz/', pos: 'verb', hint: 'use.png' },
+      { en: 'eat', ja: '食べる', phonetics: '/iːt/', pos: 'verb', hint: 'eat.png' },
+      { en: 'have', ja: '持つ（飼う）', phonetics: '/hæv/', pos: 'verb', hint: 'have.png' },
+      { en: 'make', ja: '作る', phonetics: '/meɪk/', pos: 'verb', hint: 'make.png' },
+      { en: 'study', ja: '勉強する', phonetics: '/ˈstʌdi/', pos: 'verb', hint: 'study.png' },
+      { en: 'clean', ja: '掃除する(きれいにする)', phonetics: '/kliːn/', pos: 'verb', hint: 'clean.png' },
     ];
 
     // 表示順: 動詞→名詞→形容詞→その他（副詞なども含む）の順に並び替える。
@@ -251,7 +251,8 @@
 
     // ヒント画像のURL省略用。CSVのURL列に「run.jpg」のようにファイル名だけ書けば、
     // このフォルダに置いた画像を自動的に読み込みます（GitHubの images フォルダにアップロードしてください）
-    const HINT_IMAGE_BASE = 'https://gonpappa.github.io/yaru/cards_16/';
+    const HINT_IMAGE_BASE = 'https://gonpappa.github.io/yaru/';
+    const HINT_IMAGE_FALLBACK_BASE = 'https://gonpappa.github.io/yaru/cards_16/';
 
     const EAR_ICON_SM = '<svg class="ear-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5a6.5 6.5 0 1 1 13 0c0 6-6 6-6 10a3.5 3.5 0 1 1-7 0"/><path d="M15 8.5a2.5 2.5 0 0 0-5 0v1a2 2 0 1 1 0 4"/></svg>';
 
@@ -445,7 +446,7 @@
         } else if (/^https?:\/\//i.test(hintValue)) {
           hintInner = `<img src="${hintValue}" alt="ヒント">`;
         } else if (/\.(jpe?g|png|gif|webp)$/i.test(hintValue)) {
-          hintInner = `<img src="${HINT_IMAGE_BASE}${hintValue}" alt="ヒント">`;
+          hintInner = `<img src="${HINT_IMAGE_BASE}${hintValue}" alt="ヒント" onerror="this.onerror=null; this.src='${HINT_IMAGE_FALLBACK_BASE}${hintValue}';">`;
         } else {
           hintInner = `<div class="hint-text">${hintValue}</div>`;
         }
